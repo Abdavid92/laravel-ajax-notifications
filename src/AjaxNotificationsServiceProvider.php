@@ -45,10 +45,15 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
 
     protected function registerDirectives()
     {
-        Blade::if('notification', function ($value) {
+        Blade::if('notification', function ($value = null) {
 
-            return $this->app->make(AjaxNotifications::class)
-                ->has($value);
+            $notifications = ajax_notifications();
+
+            if ($value) {
+                return $notifications->has($value);
+            }
+
+            return $notifications->some();
         });
     }
 }

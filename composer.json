@@ -1,7 +1,7 @@
 {
     "name": "abdavid92/laravel-ajax-notifications",
     "description": "Asynchronic notifications for Laravel without Web Sockets",
-    "version": "0.1.3",
+    "version": "0.2.0",
     "type": "library",
     "license": "MIT",
     "autoload": {

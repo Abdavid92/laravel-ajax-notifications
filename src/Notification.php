@@ -23,4 +23,11 @@ class Notification
      * @var array
      */
     public $body;
+
+    public function __construct(?string $id = null, ?array $body = null, ?array $header = null)
+    {
+        $this->id = $id;
+        $this->header = $header;
+        $this->body = $body;
+    }
 }

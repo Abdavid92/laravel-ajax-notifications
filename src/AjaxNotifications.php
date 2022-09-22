@@ -27,6 +27,46 @@ class AjaxNotifications
     }
 
     /**
+     * Get all notifications.
+     *
+     * @return array<Notification>
+     */
+    function all(): array
+    {
+        return $this->storage->all();
+    }
+
+    /**
+     * Get first notification.
+     *
+     * @return Notification|null
+     */
+    function first(): ?Notification
+    {
+        $notifications = $this->all();
+
+        if (count($notifications))
+            return $notifications[array_key_first($notifications)];
+
+        return null;
+    }
+
+    /**
+     * Get last notification.
+     *
+     * @return Notification|null
+     */
+    function last(): ?Notification
+    {
+        $notifications = $this->all();
+
+        if (count($notifications))
+            return $notifications[array_key_last($notifications)];
+
+        return null;
+    }
+
+    /**
      * Send a notification.
      *
      * @param Notification $notification
@@ -64,8 +104,24 @@ class AjaxNotifications
         $this->storage->delete($id);
     }
 
+    /**
+     * Indicate if the given notification id exists.
+     *
+     * @param $id
+     * @return bool
+     */
     public function has($id): bool
     {
         return $this->get($id) != null;
+    }
+
+    /**
+     * Indicate if some notification exists.
+     *
+     * @return bool
+     */
+    public function some(): bool
+    {
+        return count($this->all());
     }
 }

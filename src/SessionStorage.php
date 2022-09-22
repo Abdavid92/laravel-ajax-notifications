@@ -14,6 +14,11 @@ use Illuminate\Support\Facades\Session;
 class SessionStorage implements Storage
 {
     /**
+     * Master session key.
+     */
+    private const MASTER_SESSION_KEY = 'ajax-notifications';
+
+    /**
      * AjaxNotifications constructor.
      *
      * @param array|null $args
@@ -25,31 +30,64 @@ class SessionStorage implements Storage
         }
     }
 
-    function put(Notification $notification)
+    function all(): array
     {
-        Session::put($notification->id, [
-            'header' => $notification->header,
-            'body' => $notification->body
-        ]);
+        $notifications = $this->getNotifications();
+
+        $result = [];
+
+        foreach ($notifications as $key => $value) {
+
+            $result[] = new Notification(
+                $key,
+                $value['body'],
+                $value['header']
+            );
+        }
+
+        return $result;
     }
 
     function get(string $id): ?Notification
     {
-        if ($data = Session::get($id)) {
+        $notifications = $this->getNotifications();
 
-            return tap(new Notification(), function (Notification $notification) use ($data) {
+        if (array_key_exists($id, $notifications)) {
 
-                $notification->header = $data['header'];
-                $notification->body = $data['body'];
-            });
+            $data = $notifications[$id];
+
+            return new Notification(
+                $id,
+                $data['header'],
+                $data['body']
+            );
         }
 
         return null;
     }
 
+    function put(Notification $notification)
+    {
+        $notifications = $this->getNotifications();
+
+        $notifications[$notification->id] = [
+            'header' => $notification->header,
+            'body' => $notification->body
+        ];
+
+        Session::put(self::MASTER_SESSION_KEY, $notifications);
+    }
+
     function delete(string $id)
     {
-        Session::remove($id);
+        $notifications = $this->getNotifications();
+
+        if (array_key_exists($id, $notifications)) {
+
+            unset($notifications[$id]);
+
+            Session::put(self::MASTER_SESSION_KEY, $notifications);
+        }
     }
 
     private function setConfig(array $config)
@@ -58,5 +96,10 @@ class SessionStorage implements Storage
 
             Session::setId($config['session_id']);
         }
+    }
+
+    private function getNotifications(): array
+    {
+        return Session::get(self::MASTER_SESSION_KEY, []);
     }
 }

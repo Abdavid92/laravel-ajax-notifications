@@ -14,11 +14,11 @@ use Abdavid92\LaravelAjaxNotifications\Notification;
 interface Storage
 {
     /**
-     * Put a notification. If was exists, override.
+     * Get all notifications.
      *
-     * @param Notification $notification
+     * @return array
      */
-    function put(Notification $notification);
+    function all(): array;
 
     /**
      * Get a notification if exists.
@@ -27,6 +27,13 @@ interface Storage
      * @return Notification|null
      */
     function get(string $id): ?Notification;
+
+    /**
+     * Put a notification. If was exists, override.
+     *
+     * @param Notification $notification
+     */
+    function put(Notification $notification);
 
     /**
      * Delete a notification for given id.
