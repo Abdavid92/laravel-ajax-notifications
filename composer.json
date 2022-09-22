@@ -1,0 +1,32 @@
+{
+    "name": "abdavid92/laravel-ajax-notifications",
+    "description": "Asynchronic notifications for Laravel without Web Sockets",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "files": [
+            "helpers.php"
+        ],
+        "psr-4": {
+            "Abdavid92\\LaravelAjaxNotifications\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Abdavid92",
+            "email": "lleraabi@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": "^7.3|^8.0",
+        "laravel/framework": "8.75"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Abdavid92\\LaravelAjaxNotifications\\AjaxNotificationsServiceProvider"
+            ]
+        }
+    }
+}
