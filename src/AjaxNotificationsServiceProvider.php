@@ -39,7 +39,8 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
     {
         Route::prefix('ajax-notifications')->group(function () {
 
-            Route::get('/{id}', AjaxNotificationsController::class);
+            Route::get('/{id}', AjaxNotificationsController::class)
+                ->name('ajax-notifications');
         });
     }
 
