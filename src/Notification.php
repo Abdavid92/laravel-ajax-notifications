@@ -3,11 +3,13 @@
 
 namespace Abdavid92\LaravelAjaxNotifications;
 
+use JsonSerializable;
+
 /**
  * Class Notification
  * @package Abdavid92\LaravelAjaxNotifications
  */
-class Notification
+class Notification implements JsonSerializable
 {
     /**
      * @var string
@@ -35,5 +37,10 @@ class Notification
         $this->id = $id;
         $this->header = $header;
         $this->body = $body;
+    }
+
+    public function jsonSerialize()
+    {
+        return json_encode($this);
     }
 }
