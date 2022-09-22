@@ -3,13 +3,14 @@
 
 namespace Abdavid92\LaravelAjaxNotifications;
 
+use Illuminate\Contracts\Support\Jsonable;
 use JsonSerializable;
 
 /**
  * Class Notification
  * @package Abdavid92\LaravelAjaxNotifications
  */
-class Notification implements JsonSerializable
+class Notification implements JsonSerializable, Jsonable
 {
     /**
      * @var string
@@ -46,5 +47,10 @@ class Notification implements JsonSerializable
             'header' => $this->header,
             'body' => $this->body
         ];
+    }
+
+    public function toJson($options = 0)
+    {
+        return json_encode($this, $options);
     }
 }
