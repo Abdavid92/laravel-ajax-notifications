@@ -39,8 +39,12 @@ class Notification implements JsonSerializable
         $this->body = $body;
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
-        return json_encode($this);
+        return [
+            'id' => $this->id,
+            'header' => $this->header,
+            'body' => $this->body
+        ];
     }
 }
