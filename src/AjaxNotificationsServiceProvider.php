@@ -28,8 +28,8 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->instance(Storage::class, function ($app, $sessionId = null) {
-            return new SessionStorage($sessionId);
+        $this->app->instance(Storage::class, function ($app, $args) {
+            return new SessionStorage($args);
         });
     }
 

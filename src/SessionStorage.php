@@ -16,12 +16,12 @@ class SessionStorage implements Storage
     /**
      * AjaxNotifications constructor.
      *
-     * @param string|null $sessionId Session id.
+     * @param array|null $args
      */
-    public function __construct(?string $sessionId = null)
+    public function __construct(?array $args = null)
     {
-        if ($sessionId) {
-            Session::setId($sessionId);
+        if ($args) {
+            $this->setConfig($args);
         }
     }
 
@@ -50,5 +50,13 @@ class SessionStorage implements Storage
     function delete(string $id)
     {
         Session::remove($id);
+    }
+
+    private function setConfig(array $config)
+    {
+        if (array_key_exists('session_id', $config)) {
+
+            Session::setId($config['session_id']);
+        }
     }
 }
