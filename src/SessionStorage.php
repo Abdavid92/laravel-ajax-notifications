@@ -97,6 +97,7 @@ class SessionStorage implements Storage
         if (array_key_exists('session_id', $config)) {
 
             Session::setId($config['session_id']);
+            Session::start();
         }
     }
 
