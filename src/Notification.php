@@ -4,6 +4,7 @@
 namespace Abdavid92\LaravelAjaxNotifications;
 
 use Illuminate\Contracts\Support\Jsonable;
+use Illuminate\Http\JsonResponse;
 use JsonSerializable;
 
 /**
@@ -40,6 +41,9 @@ class Notification implements JsonSerializable, Jsonable
         $this->body = $body;
     }
 
+    /**
+     * @return array
+     */
     public function jsonSerialize(): array
     {
         return [
@@ -49,8 +53,12 @@ class Notification implements JsonSerializable, Jsonable
         ];
     }
 
-    public function toJson($options = 0)
+    /**
+     * @param int $options
+     * @return JsonResponse
+     */
+    public function toJson($options = 0): JsonResponse
     {
-        return json_encode($this, $options);
+        return new JsonResponse($this->jsonSerialize());
     }
 }
