@@ -13,6 +13,6 @@ if (! function_exists('ajax_notifications')) {
      */
     function ajax_notifications(?array $args = null): AjaxNotifications
     {
-        return app(AjaxNotifications::class, [app(Storage::class, [$args])]);
+        return app(AjaxNotifications::class, [app(Storage::class, $args)]);
     }
 }
