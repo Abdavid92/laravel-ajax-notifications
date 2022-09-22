@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "files": [
-            "helpers.php"
+            "src/helpers.php"
         ],
         "psr-4": {
             "Abdavid92\\LaravelAjaxNotifications\\": "src/"
