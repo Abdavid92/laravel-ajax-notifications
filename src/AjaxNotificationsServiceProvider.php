@@ -6,6 +6,7 @@ namespace Abdavid92\LaravelAjaxNotifications;
 
 use Abdavid92\LaravelAjaxNotifications\Contracts\Storage;
 use Abdavid92\LaravelAjaxNotifications\Http\Controllers\AjaxNotificationsController;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
@@ -19,6 +20,7 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerRoutes();
+        $this->registerDirectives();
     }
 
     /**
@@ -38,6 +40,15 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
         Route::prefix('ajax-notifications')->group(function () {
 
             Route::get('/{id}', AjaxNotificationsController::class);
+        });
+    }
+
+    protected function registerDirectives()
+    {
+        Blade::if('notification', function ($value) {
+
+            return $this->app->make(AjaxNotifications::class)
+                ->has($value);
         });
     }
 }
