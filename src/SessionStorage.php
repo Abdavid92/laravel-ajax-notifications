@@ -60,6 +60,7 @@ class SessionStorage implements Storage
         ];
 
         Session::put(self::MASTER_SESSION_KEY, $notifications);
+        Session::save();
     }
 
     function delete(string $id)
@@ -71,6 +72,7 @@ class SessionStorage implements Storage
             unset($notifications[$id]);
 
             Session::put(self::MASTER_SESSION_KEY, $notifications);
+            Session::save();
         }
     }
 
