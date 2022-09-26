@@ -4,6 +4,7 @@
 namespace Abdavid92\LaravelAjaxNotifications\Http\Controllers;
 
 use Abdavid92\LaravelAjaxNotifications\AjaxNotifications;
+use Abdavid92\LaravelAjaxNotifications\Contracts\NotificationResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
 
@@ -24,14 +25,47 @@ class AjaxNotificationsController extends Controller
     }
 
     /**
+     * @return JsonResponse
+     */
+    public function all(): JsonResponse
+    {
+        return response()->json(
+            $this->notifications->all()
+        );
+    }
+
+    /**
      * @param string $id
      * @return JsonResponse
      */
-    public function __invoke(string $id): JsonResponse
+    public function get(string $id): JsonResponse
     {
         if ($notification = $this->notifications->get($id)) {
 
-            return response()->json($notification);
+            return app(NotificationResponse::class)->toResponse($notification);
+        }
+
+        return response()->json([], 404);
+    }
+
+    /**
+     * @return JsonResponse
+     */
+    public function first(): JsonResponse
+    {
+        if ($notification = $this->notifications->first()) {
+
+            return app(NotificationResponse::class)->toResponse($notification);
+        }
+
+        return response()->json([], 404);
+    }
+
+    public function last()
+    {
+        if ($notification = $this->notifications->last()) {
+
+            return app(NotificationResponse::class)->toResponse($notification);
         }
 
         return response()->json([], 404);

@@ -1,56 +1,56 @@
 <?php
 
-
 namespace Abdavid92\LaravelAjaxNotifications;
 
-use Illuminate\Contracts\Support\Jsonable;
-use JsonSerializable;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class Notification
  * @package Abdavid92\LaravelAjaxNotifications
+ *
+ * @property string $id
+ * @property array $header
+ * @property array $body
+ *
+ * @method static Notification|null find(string $id)
  */
-class Notification implements JsonSerializable, Jsonable
+class Notification extends Model
 {
+    use HasFactory;
+
     /**
+     * The "type" of the primary key ID.
+     *
      * @var string
      */
-    public $id;
+    protected $keyType = 'string';
 
     /**
+     * Indicates if the IDs are auto-incrementing.
+     *
+     * @var bool
+     */
+    public $incrementing = false;
+
+    /**
+     * The attributes that should be cast.
+     *
      * @var array
      */
-    public $header;
+    protected $casts = [
+        'header' => 'array',
+        'body' => 'array'
+    ];
 
     /**
-     * @var array
+     * The attributes that are mass assignable.
+     *
+     * @var string[]
      */
-    public $body;
-
-    /**
-     * Notification constructor.
-     * @param string|null $id
-     * @param array|null $body
-     * @param array|null $header
-     */
-    public function __construct(?string $id = null, ?array $body = null, ?array $header = null)
-    {
-        $this->id = $id;
-        $this->header = $header;
-        $this->body = $body;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return [
-            'id' => $this->id,
-            'header' => $this->header,
-            'body' => $this->body
-        ];
-    }
-
-    public function toJson($options = 0)
-    {
-        return json_encode($this, $options);
-    }
+    protected $fillable = [
+        'id',
+        'header',
+        'body'
+    ];
 }

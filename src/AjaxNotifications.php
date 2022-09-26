@@ -3,6 +3,7 @@
 namespace Abdavid92\LaravelAjaxNotifications;
 
 use Abdavid92\LaravelAjaxNotifications\Contracts\Storage;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 
 /**
@@ -17,6 +18,11 @@ class AjaxNotifications
     private $storage;
 
     /**
+     * @var boolean
+     */
+    private $flash;
+
+    /**
      * AjaxNotifications constructor.
      *
      * @param Storage $storage
@@ -24,16 +30,20 @@ class AjaxNotifications
     public function __construct(Storage $storage)
     {
         $this->storage = $storage;
+        $this->flash = config('ajaxnotifications.flash', false);
     }
 
     /**
      * Get all notifications.
      *
-     * @return array<Notification>
+     * @return Collection<Notification>
      */
-    function all(): array
+    function all(): Collection
     {
-        return $this->storage->all();
+        return tap($this->storage->get(), function ($items) {
+
+            $this->flash($items);
+        });
     }
 
     /**
@@ -45,8 +55,11 @@ class AjaxNotifications
     {
         $notifications = $this->all();
 
-        if (count($notifications))
-            return $notifications[array_key_first($notifications)];
+        if ($notifications->isNotEmpty())
+            return tap($notifications->first(), function ($item) {
+
+                $this->flash($item);
+            });
 
         return null;
     }
@@ -60,8 +73,11 @@ class AjaxNotifications
     {
         $notifications = $this->all();
 
-        if (count($notifications))
-            return $notifications[array_key_last($notifications)];
+        if ($notifications->isNotEmpty())
+            return tap($notifications->last(), function ($item) {
+
+                $this->flash($item);
+            });
 
         return null;
     }
@@ -75,7 +91,7 @@ class AjaxNotifications
     public function send(Notification $notification): string
     {
         if (! $notification->id) {
-            $notification->id = Str::random();
+            $notification->id = Str::random(40);
         }
 
         $this->storage->put($notification);
@@ -91,7 +107,9 @@ class AjaxNotifications
      */
     public function get(string $id): ?Notification
     {
-        return $this->storage->get($id);
+        return tap($this->storage->get($id), function ($item) {
+            $this->flash($item);
+        });
     }
 
     /**
@@ -112,7 +130,7 @@ class AjaxNotifications
      */
     public function has($id): bool
     {
-        return $this->get($id) != null;
+        return $this->storage->get($id) != null;
     }
 
     /**
@@ -122,6 +140,23 @@ class AjaxNotifications
      */
     public function some(): bool
     {
-        return count($this->all());
+        return $this->storage->get()->isNotEmpty();
+    }
+
+    private function flash($items)
+    {
+        if ($this->flash) {
+
+            if ($items instanceof Collection) {
+
+                foreach ($items as $item) {
+
+                    $this->delete($item->id);
+                }
+            } else {
+
+                $this->delete($items->id);
+            }
+        }
     }
 }

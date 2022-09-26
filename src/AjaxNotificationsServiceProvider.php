@@ -4,6 +4,7 @@
 namespace Abdavid92\LaravelAjaxNotifications;
 
 
+use Abdavid92\LaravelAjaxNotifications\Contracts\NotificationResponse;
 use Abdavid92\LaravelAjaxNotifications\Contracts\Storage;
 use Abdavid92\LaravelAjaxNotifications\Http\Controllers\AjaxNotificationsController;
 use Illuminate\Support\Facades\Blade;
@@ -19,7 +20,17 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->registerRoutes();
+        if ($this->app->runningInConsole()) {
+            $this->publishes([
+                __DIR__ . '/../migrations' => database_path('migrations')
+            ], 'notifications-migrations');
+
+            $this->publishes([
+                __DIR__ . '/../config/ajaxnotifications.php' => config_path('ajaxnotifications.php')
+            ], 'notifications-config');
+        }
+
+        $this->defineRoutes();
         $this->registerDirectives();
     }
 
@@ -30,17 +41,37 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(Storage::class, function ($app, $args) {
-            return new SessionStorage($args);
+        $this->app->bind('session', SessionStorage::class);
+        $this->app->bind('database', DatabaseStorage::class);
+
+        $this->app->bind(Storage::class, function ($app) {
+
+            $storage = config('ajaxnotifications.storage', 'session');
+
+            return $app->make($storage);
         });
+
+        $this->app->bind(
+            NotificationResponse::class,
+            Responses\NotificationResponse::class
+        );
     }
 
-    protected function registerRoutes()
+    protected function defineRoutes()
     {
         Route::prefix('ajax-notifications')->group(function () {
 
-            Route::get('/{id}', AjaxNotificationsController::class)
-                ->name('ajax-notifications');
+            Route::get('/', [AjaxNotificationsController::class, 'all'])
+                ->name('ajax-notifications.all');
+
+            Route::get('/{id}', [AjaxNotificationsController::class, 'get'])
+                ->name('ajax-notifications.get');
+
+            Route::get('/first', [AjaxNotificationsController::class, 'first'])
+                ->name('ajax-notifications.first');
+
+            Route::get('/last', [AjaxNotificationsController::class, 'last'])
+                ->name('ajax-notifications.last');
         });
     }
 

@@ -5,6 +5,7 @@ namespace Abdavid92\LaravelAjaxNotifications\Contracts;
 
 
 use Abdavid92\LaravelAjaxNotifications\Notification;
+use Illuminate\Support\Collection;
 
 /**
  * Interface Storage Notifications storage contract.
@@ -14,19 +15,12 @@ use Abdavid92\LaravelAjaxNotifications\Notification;
 interface Storage
 {
     /**
-     * Get all notifications.
+     * Get a notification if exists or all notifications if id is null.
      *
-     * @return array
+     * @param string|null $id
+     * @return Collection|Notification|null
      */
-    function all(): array;
-
-    /**
-     * Get a notification if exists.
-     *
-     * @param string $id
-     * @return Notification|null
-     */
-    function get(string $id): ?Notification;
+    function get(?string $id = null);
 
     /**
      * Put a notification. If was exists, override.

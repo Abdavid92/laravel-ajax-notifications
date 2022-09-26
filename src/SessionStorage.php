@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Abdavid92\LaravelAjaxNotifications;
-
 
 use Abdavid92\LaravelAjaxNotifications\Contracts\Storage;
 use Illuminate\Support\Facades\Session;
@@ -18,52 +16,38 @@ class SessionStorage implements Storage
      */
     private const MASTER_SESSION_KEY = 'ajax-notifications';
 
-    /**
-     * AjaxNotifications constructor.
-     *
-     * @param array|null $args
-     */
-    public function __construct(?array $args = null)
-    {
-        if ($args) {
-            $this->setConfig($args);
-        }
-    }
-
-    function all(): array
+    function get(string $id = null)
     {
         $notifications = $this->getNotifications();
 
-        $result = [];
+        if ($id) {
+
+            if (array_key_exists($id, $notifications)) {
+
+                $data = $notifications[$id];
+
+                return new Notification([
+                    'id' => $id,
+                    'header' => $data['header'],
+                    'body' => $data['body']
+                ]);
+            }
+
+            return null;
+        }
+
+        $collection = collect();
 
         foreach ($notifications as $key => $value) {
 
-            $result[] = new Notification(
-                $key,
-                $value['body'],
-                $value['header']
-            );
+            $collection->add(new Notification([
+                'id' => $key,
+                'header' => $value['header'],
+                'body' => $value['body']
+            ]));
         }
 
-        return $result;
-    }
-
-    function get(string $id): ?Notification
-    {
-        $notifications = $this->getNotifications();
-
-        if (array_key_exists($id, $notifications)) {
-
-            $data = $notifications[$id];
-
-            return new Notification(
-                $id,
-                $data['header'],
-                $data['body']
-            );
-        }
-
-        return null;
+        return $collection;
     }
 
     function put(Notification $notification)
@@ -87,14 +71,6 @@ class SessionStorage implements Storage
             unset($notifications[$id]);
 
             Session::put(self::MASTER_SESSION_KEY, $notifications);
-        }
-    }
-
-    private function setConfig(array $config)
-    {
-        if (array_key_exists('session_id', $config)) {
-
-            Session::setId($config['session_id']);
         }
     }
 
