@@ -4,6 +4,7 @@
 namespace Abdavid92\LaravelAjaxNotifications;
 
 
+use Abdavid92\LaravelAjaxNotifications\Contracts\FailedNotificationResponse;
 use Abdavid92\LaravelAjaxNotifications\Contracts\NotificationResponse;
 use Abdavid92\LaravelAjaxNotifications\Contracts\Storage;
 use Abdavid92\LaravelAjaxNotifications\Http\Controllers\AjaxNotificationsController;
@@ -41,19 +42,24 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind('session', SessionStorage::class);
-        $this->app->bind('database', DatabaseStorage::class);
+        $this->app->bind('ajax-notifications.session', SessionStorage::class);
+        $this->app->bind('ajax-notifications.database', DatabaseStorage::class);
 
         $this->app->bind(Storage::class, function ($app) {
 
             $storage = config('ajaxnotifications.storage', 'session');
 
-            return $app->make($storage);
+            return $app->make('ajax-notifications.'.$storage);
         });
 
         $this->app->bind(
             NotificationResponse::class,
             Responses\NotificationResponse::class
+        );
+
+        $this->app->bind(
+            FailedNotificationResponse::class,
+            Responses\FailedNotificationResponse::class
         );
     }
 

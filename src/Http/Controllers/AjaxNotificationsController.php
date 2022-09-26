@@ -4,6 +4,7 @@
 namespace Abdavid92\LaravelAjaxNotifications\Http\Controllers;
 
 use Abdavid92\LaravelAjaxNotifications\AjaxNotifications;
+use Abdavid92\LaravelAjaxNotifications\Contracts\FailedNotificationResponse;
 use Abdavid92\LaravelAjaxNotifications\Contracts\NotificationResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Routing\Controller;
@@ -45,7 +46,7 @@ class AjaxNotificationsController extends Controller
             return app(NotificationResponse::class)->toResponse($notification);
         }
 
-        return response()->json([], 404);
+        return app(FailedNotificationResponse::class)->toResponse();
     }
 
     /**
@@ -58,7 +59,7 @@ class AjaxNotificationsController extends Controller
             return app(NotificationResponse::class)->toResponse($notification);
         }
 
-        return response()->json([], 404);
+        return app(FailedNotificationResponse::class)->toResponse();
     }
 
     public function last()
@@ -68,6 +69,6 @@ class AjaxNotificationsController extends Controller
             return app(NotificationResponse::class)->toResponse($notification);
         }
 
-        return response()->json([], 404);
+        return app(FailedNotificationResponse::class)->toResponse();
     }
 }

@@ -18,7 +18,17 @@ class DatabaseStorage implements Storage
 
     function put(Notification $notification)
     {
-        $notification->save();
+        if ($existsNotification = Notification::find($notification->id)) {
+
+            $existsNotification->forceFill([
+                'header' => $notification->header,
+                'body' => $notification->body
+            ])->save();
+
+        } else {
+
+            $notification->save();
+        }
     }
 
     function delete(string $id)

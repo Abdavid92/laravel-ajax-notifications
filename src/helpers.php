@@ -8,11 +8,10 @@ if (! function_exists('ajax_notifications')) {
     /**
      * Get a {@link AjaxNotifications} instance.
      *
-     * @param array|null $args
      * @return AjaxNotifications
      */
-    function ajax_notifications(?array $args = null): AjaxNotifications
+    function ajax_notifications(): AjaxNotifications
     {
-        return app(AjaxNotifications::class, [app(Storage::class, $args ?? [])]);
+        return app(AjaxNotifications::class);
     }
 }
