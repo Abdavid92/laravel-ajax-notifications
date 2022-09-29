@@ -26,10 +26,10 @@
     "require": {
         "php": "^7.3|^8.0",
         "ext-json": "*",
-        "laravel/framework": "^5.8.*"
+        "laravel/framework": "^5.8"
     },
     "require-dev": {
-        "orchestra/testbench": "3.*"
+        "orchestra/testbench": "3"
     },
     "extra": {
         "laravel": {
