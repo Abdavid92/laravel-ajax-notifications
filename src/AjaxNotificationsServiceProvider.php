@@ -44,6 +44,7 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
     {
         $this->app->bind('ajax-notifications.session', SessionStorage::class);
         $this->app->bind('ajax-notifications.database', DatabaseStorage::class);
+        $this->app->bind('ajax-notifications.file', FileStorage::class);
 
         $this->app->bind(Storage::class, function ($app) {
 

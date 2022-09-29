@@ -6,6 +6,8 @@ namespace Abdavid92\LaravelAjaxNotifications\Tests;
 
 use Abdavid92\LaravelAjaxNotifications\AjaxNotifications;
 use Abdavid92\LaravelAjaxNotifications\Notification;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Hash;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -80,5 +82,14 @@ class AjaxNotificationsTest extends TestCase
         $collection = $this->notifications->all();
 
         $this->assertNotEmpty($collection);
+    }
+
+    public function test_delete()
+    {
+        foreach ($this->notifications->all() as $n) {
+            $this->notifications->delete($n->id);
+        }
+
+        $this->assertEmpty($this->notifications->all());
     }
 }

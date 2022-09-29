@@ -4,6 +4,7 @@ namespace Abdavid92\LaravelAjaxNotifications;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * Class Notification
@@ -12,6 +13,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $id
  * @property array $header
  * @property array $body
+ * @property Model $notifiable
  *
  * @method static Notification|null find(string $id)
  */
@@ -51,6 +53,20 @@ class Notification extends Model
     protected $fillable = [
         'id',
         'header',
-        'body'
+        'body',
+        'notifiable_id',
+        'notifiable_type',
+        'created_at',
+        'updated_at'
     ];
+
+    /**
+     * Get the notifiable model that the access notifications belongs to.
+     *
+     * @return MorphTo
+     */
+    public function notifiable(): MorphTo
+    {
+        return $this->morphTo('notifiable');
+    }
 }

@@ -18,6 +18,7 @@ class CreateNotificationsTable extends Migration
             $table->json('header')->nullable();
             $table->json('body');
             $table->primary('id');
+            $table->morphs('notifiable');
             $table->timestamps();
         });
     }

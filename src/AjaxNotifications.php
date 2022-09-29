@@ -40,7 +40,8 @@ class AjaxNotifications
      */
     function all(): Collection
     {
-        return tap($this->storage->get(), function ($items) {
+        return tap($this->filterByUser($this->storage->get()), function ($items) {
+
 
             $this->flash($items);
         });
@@ -94,6 +95,11 @@ class AjaxNotifications
             $notification->id = Str::random(40);
         }
 
+        if (! $notification->notifiable) {
+
+            $notification->notifiable()->associate(auth()->user());
+        }
+
         $this->storage->put($notification);
 
         return $notification->id;
@@ -145,6 +151,9 @@ class AjaxNotifications
 
     private function flash($items)
     {
+        if (is_null($items))
+            return;
+
         if ($this->flash) {
 
             if ($items instanceof Collection) {
@@ -158,5 +167,26 @@ class AjaxNotifications
                 $this->delete($items->id);
             }
         }
+    }
+
+    private function filterByUser($items)
+    {
+        if ($items instanceof Collection) {
+
+            $user = auth()->user();
+
+            $toAdd = collect();
+
+            foreach ($items as $item) {
+
+                if ($item->notifiable_id === $user->id) {
+                    $toAdd->push($item);
+                }
+            }
+
+            return $toAdd;
+        }
+
+        return $items;
     }
 }
