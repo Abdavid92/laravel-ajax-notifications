@@ -66,7 +66,7 @@ class FileStorage implements Storage
             $notification->updated_at = $notification->created_at;
         }
 
-        \Illuminate\Support\Facades\Storage::put(
+        \Illuminate\Support\Facades\Storage::disk(self::DISK)->put(
             self::DIR.'/'.$notification->id.'.json',
             $notification->toJson(),
             [
