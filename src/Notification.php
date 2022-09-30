@@ -2,7 +2,6 @@
 
 namespace Abdavid92\LaravelAjaxNotifications;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
@@ -19,8 +18,6 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Notification extends Model
 {
-    use HasFactory;
-
     /**
      * The "type" of the primary key ID.
      *
