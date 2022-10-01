@@ -177,6 +177,9 @@ class AjaxNotifications
 
             $toAdd = collect();
 
+            if (is_null($user))
+                return $toAdd;
+
             foreach ($items as $item) {
 
                 if ($item->notifiable_id === $user->id) {
