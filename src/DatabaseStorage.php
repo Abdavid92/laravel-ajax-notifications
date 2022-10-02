@@ -2,9 +2,8 @@
 
 namespace Abdavid92\LaravelAjaxNotifications;
 
-use Abdavid92\LaravelAjaxNotifications\Contracts\Storage;
 
-class DatabaseStorage implements Storage
+class DatabaseStorage extends AbstractStorage
 {
 
     function get(?string $id = null)
@@ -13,7 +12,7 @@ class DatabaseStorage implements Storage
             return Notification::find($id);
         }
 
-        return Notification::all();
+        return Notification::all()->sortBy(self::SORT_BY);
     }
 
     function put(Notification $notification)

@@ -4,10 +4,10 @@
 namespace Abdavid92\LaravelAjaxNotifications;
 
 
-use Abdavid92\LaravelAjaxNotifications\Contracts\Storage;
+use Illuminate\Support\Facades\Storage;
 use Throwable;
 
-class FileStorage implements Storage
+class FileStorage extends AbstractStorage
 {
 
     /**
@@ -26,26 +26,26 @@ class FileStorage implements Storage
 
             if ($id) {
 
-                $json = \Illuminate\Support\Facades\Storage::disk(self::DISK)
+                $json = Storage::disk(self::DISK)
                     ->get(self::DIR.'/'.$id.'.json');
 
                 return $this->fromJson($json);
             } else {
 
-                $files = \Illuminate\Support\Facades\Storage::disk(self::DISK)
+                $files = Storage::disk(self::DISK)
                     ->files(self::DIR);
 
                 $collection = collect();
 
                 foreach ($files as $f) {
 
-                    $json = \Illuminate\Support\Facades\Storage::disk(self::DISK)
+                    $json = Storage::disk(self::DISK)
                         ->get($f);
 
                     $collection->push($this->fromJson($json));
                 }
 
-                return $collection->sortBy('created_at');
+                return $collection->sortBy(self::SORT_BY);
             }
         } catch (Throwable $e) {
 
@@ -56,17 +56,9 @@ class FileStorage implements Storage
 
     function put(Notification $notification)
     {
-        $oldNotification = $this->get($notification->id);
+        $this->updateTimestampFields($notification);
 
-        if ($oldNotification) {
-            $notification->created_at = $oldNotification->created_at;
-            $notification->updated_at = now();
-        } else {
-            $notification->created_at = now();
-            $notification->updated_at = $notification->created_at;
-        }
-
-        \Illuminate\Support\Facades\Storage::disk(self::DISK)->put(
+        Storage::disk(self::DISK)->put(
             self::DIR.'/'.$notification->id.'.json',
             $notification->toJson(),
             [
@@ -77,7 +69,7 @@ class FileStorage implements Storage
 
     function delete(string $id)
     {
-        \Illuminate\Support\Facades\Storage::disk(self::DISK)
+        Storage::disk(self::DISK)
             ->delete(self::DIR.'/'.$id.'.json');
     }
 

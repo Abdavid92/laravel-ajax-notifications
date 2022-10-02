@@ -2,14 +2,14 @@
 
 namespace Abdavid92\LaravelAjaxNotifications;
 
-use Abdavid92\LaravelAjaxNotifications\Contracts\Storage;
+
 use Illuminate\Support\Facades\Session;
 
 /**
  * Class SessionStorage
  * @package Abdavid92\LaravelAjaxNotifications
  */
-class SessionStorage implements Storage
+class SessionStorage extends AbstractStorage
 {
     /**
      * Master session key.
@@ -47,11 +47,13 @@ class SessionStorage implements Storage
             ]));
         }
 
-        return $collection;
+        return $collection->sortBy(self::SORT_BY);
     }
 
     function put(Notification $notification)
     {
+        $this->updateTimestampFields($notification);
+
         $notifications = $this->getNotifications();
 
         $notifications[$notification->id] = [

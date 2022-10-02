@@ -5,6 +5,7 @@ namespace Abdavid92\LaravelAjaxNotifications;
 use Abdavid92\LaravelAjaxNotifications\Contracts\Storage;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Abdavid92\LaravelAjaxNotifications\Contracts\UserProvider;
 
 /**
  * Class AjaxNotifications
@@ -18,6 +19,11 @@ class AjaxNotifications
     private $storage;
 
     /**
+     * @var UserProvider
+     */
+    private $userProvider;
+
+    /**
      * @var boolean
      */
     private $flash;
@@ -26,10 +32,12 @@ class AjaxNotifications
      * AjaxNotifications constructor.
      *
      * @param Storage $storage
+     * @param UserProvider $userProvider
      */
-    public function __construct(Storage $storage)
+    public function __construct(Storage $storage, UserProvider $userProvider)
     {
         $this->storage = $storage;
+        $this->userProvider = $userProvider;
         $this->flash = config('ajaxnotifications.flash', false);
     }
 
@@ -97,7 +105,7 @@ class AjaxNotifications
 
         if (! $notification->notifiable) {
 
-            $notification->notifiable()->associate(auth()->user());
+            $notification->notifiable()->associate($this->userProvider->get());
         }
 
         $this->storage->put($notification);
@@ -173,7 +181,7 @@ class AjaxNotifications
     {
         if ($items instanceof Collection) {
 
-            $user = auth()->user();
+            $user = $this->userProvider->get();
 
             $toAdd = collect();
 

@@ -62,6 +62,11 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
             FailedNotificationResponse::class,
             Responses\FailedNotificationResponse::class
         );
+
+        $this->app->bind(
+            \Abdavid92\LaravelAjaxNotifications\Contracts\UserProvider::class,
+            UserProvider::class
+        );
     }
 
     protected function defineRoutes()
