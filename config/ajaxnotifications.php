@@ -14,5 +14,13 @@ return [
     /**
      * Indicate if notifications must be deleted after returned.
      */
-    'flash' => false
+    'flash' => false,
+
+    /**
+     * Routes middlewares.
+     */
+    'middlewares' => [
+        'api',
+        'auth'
+    ]
 ];

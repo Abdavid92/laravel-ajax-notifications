@@ -66,20 +66,7 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
 
     protected function defineRoutes()
     {
-        Route::prefix('ajax-notifications')->group(function () {
-
-            Route::get('/', [AjaxNotificationsController::class, 'all'])
-                ->name('ajax-notifications.all');
-
-            Route::get('/{id}', [AjaxNotificationsController::class, 'get'])
-                ->name('ajax-notifications.get');
-
-            Route::get('/first', [AjaxNotificationsController::class, 'first'])
-                ->name('ajax-notifications.first');
-
-            Route::get('/last', [AjaxNotificationsController::class, 'last'])
-                ->name('ajax-notifications.last');
-        });
+        $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
     }
 
     protected function registerDirectives()
