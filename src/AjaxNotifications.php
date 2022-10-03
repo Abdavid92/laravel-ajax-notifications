@@ -3,6 +3,7 @@
 namespace Abdavid92\LaravelAjaxNotifications;
 
 use Abdavid92\LaravelAjaxNotifications\Contracts\Storage;
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Abdavid92\LaravelAjaxNotifications\Contracts\UserProvider;
@@ -24,9 +25,9 @@ class AjaxNotifications
     private $userProvider;
 
     /**
-     * @var boolean
+     * @var boolean|Closure
      */
-    private $flash;
+    protected static $flash;
 
     /**
      * AjaxNotifications constructor.
@@ -38,7 +39,9 @@ class AjaxNotifications
     {
         $this->storage = $storage;
         $this->userProvider = $userProvider;
-        $this->flash = config('ajaxnotifications.flash', false);
+
+        if (! self::$flash)
+            self::$flash = config('ajaxnotifications.flash', false);
     }
 
     /**
@@ -162,15 +165,18 @@ class AjaxNotifications
         if (is_null($items))
             return;
 
-        if ($this->flash) {
+        if ($items instanceof Collection) {
 
-            if ($items instanceof Collection) {
+            foreach ($items as $item) {
 
-                foreach ($items as $item) {
+                if ($this->getFlash($item)) {
 
                     $this->delete($item->id);
                 }
-            } else {
+            }
+        } else {
+
+            if ($this->getFlash($items)) {
 
                 $this->delete($items->id);
             }
@@ -199,5 +205,30 @@ class AjaxNotifications
         }
 
         return $items;
+    }
+
+    private function getFlash(Notification $notification): bool
+    {
+        if (isset(self::$flash) && ! is_null(self::$flash)) {
+
+            if (self::$flash instanceof Closure) {
+
+                return self::$flash->call($this, $notification);
+            }
+
+            return self::$flash;
+        }
+
+        return false;
+    }
+
+    /**
+     * Set flash rules with a callback.
+     *
+     * @param Closure $callback
+     */
+    public static function setFlashCallback(Closure $callback)
+    {
+        self::$flash = $callback;
     }
 }
