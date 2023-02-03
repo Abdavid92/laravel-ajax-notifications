@@ -16,7 +16,7 @@ class AjaxNotificationsTest extends TestCase
     /**
      * @var AjaxNotifications
      */
-    private $notifications;
+    private AjaxNotifications $notifications;
 
     protected function setUp(): void
     {

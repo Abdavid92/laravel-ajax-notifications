@@ -42,7 +42,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      *
      * @return void
      */
-    protected function defineDatabaseMigrations()
+    protected function defineDatabaseMigrations(): void
     {
         $this->loadLaravelMigrations();
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');
@@ -55,7 +55,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      *
      * @return array<int, string>
      */
-    protected function getPackageProviders($app)
+    protected function getPackageProviders($app): array
     {
         return [
             'Abdavid92\LaravelAjaxNotifications\AjaxNotificationsServiceProvider',
@@ -68,7 +68,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      * @param  Application  $app
      * @return void
      */
-    protected function defineEnvironment($app)
+    protected function defineEnvironment($app): void
     {
         $app['config']->set('ajaxnotifications.storage', 'file');
     }
