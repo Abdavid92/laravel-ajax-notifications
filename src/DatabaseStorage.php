@@ -3,10 +3,12 @@
 namespace Abdavid92\LaravelAjaxNotifications;
 
 
+use Illuminate\Support\Collection;
+
 class DatabaseStorage extends AbstractStorage
 {
 
-    function get(?string $id = null)
+    function get(?string $id = null): Notification|Collection|null
     {
         if ($id) {
             return Notification::find($id);
@@ -15,7 +17,7 @@ class DatabaseStorage extends AbstractStorage
         return Notification::all()->sortBy(self::SORT_BY);
     }
 
-    function put(Notification $notification)
+    function put(Notification $notification): void
     {
         if ($existsNotification = Notification::find($notification->id)) {
 
@@ -30,10 +32,12 @@ class DatabaseStorage extends AbstractStorage
         }
     }
 
-    function delete(string $id)
+    function delete(string $id): mixed
     {
         if ($notification = Notification::find($id)) {
-            $notification->delete();
+            return $notification->delete();
         }
+
+        return false;
     }
 }

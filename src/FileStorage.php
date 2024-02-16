@@ -4,6 +4,7 @@
 namespace Abdavid92\LaravelAjaxNotifications;
 
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use Throwable;
 
@@ -13,27 +14,32 @@ class FileStorage extends AbstractStorage
     /**
      * Storage directory.
      */
-    private const DIR = 'ajax-notifications';
+    private string $dir;
 
     /**
      * Storage disk.
      */
     private const DISK = 'local';
 
-    function get(?string $id = null)
+    public function __construct()
+    {
+        $this->dir = config('ajaxnotifications.storages.file.directory', 'ajax-notifications');
+    }
+
+    function get(?string $id = null): Notification|Collection|null
     {
         try {
 
             if ($id) {
 
                 $json = Storage::disk(self::DISK)
-                    ->get(self::DIR.'/'.$id.'.json');
+                    ->get($this->dir.'/'.$id.'.json');
 
                 return $this->fromJson($json);
             } else {
 
                 $files = Storage::disk(self::DISK)
-                    ->files(self::DIR);
+                    ->files($this->dir);
 
                 $collection = collect();
 
@@ -59,7 +65,7 @@ class FileStorage extends AbstractStorage
         $this->updateTimestampFields($notification);
 
         Storage::disk(self::DISK)->put(
-            self::DIR.'/'.$notification->id.'.json',
+            $this->dir.'/'.$notification->id.'.json',
             $notification->toJson(),
             [
                 'disk' => self::DISK
@@ -67,10 +73,10 @@ class FileStorage extends AbstractStorage
         );
     }
 
-    function delete(string $id)
+    function delete(string $id): mixed
     {
-        Storage::disk(self::DISK)
-            ->delete(self::DIR.'/'.$id.'.json');
+        return Storage::disk(self::DISK)
+            ->delete($this->dir.'/'.$id.'.json');
     }
 
     private function fromJson($json): Notification

@@ -14,5 +14,5 @@ interface UserProvider
      *
      * @return mixed
      */
-    function get();
+    function get(): mixed;
 }

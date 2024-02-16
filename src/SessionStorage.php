@@ -3,6 +3,7 @@
 namespace Abdavid92\LaravelAjaxNotifications;
 
 
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Session;
 
 /**
@@ -14,9 +15,14 @@ class SessionStorage extends AbstractStorage
     /**
      * Master session key.
      */
-    private const MASTER_SESSION_KEY = 'ajax-notifications';
+    private string $master_session_key;
 
-    function get(string $id = null)
+    public function __construct()
+    {
+        $this->master_session_key = config('ajaxnotifications.storages.session.session_key', 'ajax-notifications');
+    }
+
+    function get(string $id = null): Notification|Collection|null
     {
         $notifications = $this->getNotifications();
 
@@ -50,7 +56,7 @@ class SessionStorage extends AbstractStorage
         return $collection->sortBy(self::SORT_BY);
     }
 
-    function put(Notification $notification)
+    function put(Notification $notification): void
     {
         $this->updateTimestampFields($notification);
 
@@ -61,11 +67,11 @@ class SessionStorage extends AbstractStorage
             'body' => $notification->body
         ];
 
-        Session::put(self::MASTER_SESSION_KEY, $notifications);
+        Session::put($this->master_session_key, $notifications);
         Session::save();
     }
 
-    function delete(string $id)
+    function delete(string $id): void
     {
         $notifications = $this->getNotifications();
 
@@ -73,13 +79,13 @@ class SessionStorage extends AbstractStorage
 
             unset($notifications[$id]);
 
-            Session::put(self::MASTER_SESSION_KEY, $notifications);
+            Session::put($this->master_session_key, $notifications);
             Session::save();
         }
     }
 
     private function getNotifications(): array
     {
-        return Session::get(self::MASTER_SESSION_KEY, []);
+        return Session::get($this->master_session_key, []);
     }
 }

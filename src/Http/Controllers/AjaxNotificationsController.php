@@ -12,17 +12,14 @@ use Illuminate\Routing\Controller;
 /**
  * Class AjaxNotificationsController
  * @package Abdavid92\LaravelAjaxNotifications\Http\Controllers
+ * @author Abel David.
  */
 class AjaxNotificationsController extends Controller
 {
-    /**
-     * @var AjaxNotifications
-     */
-    private $notifications;
-
-    public function __construct(AjaxNotifications $notifications)
+    public function __construct(
+        private AjaxNotifications $notifications)
     {
-        $this->notifications = $notifications;
+        //
     }
 
     /**

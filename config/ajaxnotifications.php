@@ -22,5 +22,17 @@ return [
     'middlewares' => [
         'api',
         'auth:sanctum'
+    ],
+
+    /**
+     * Storage drivers
+     */
+    'storages' => [
+        'session' => [
+            'session_key' => 'ajax-notifications'
+        ],
+        'file' => [
+            'directory' => 'ajax-notifications'
+        ]
     ]
 ];

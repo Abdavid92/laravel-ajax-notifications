@@ -18,7 +18,7 @@ abstract class AbstractStorage implements Storage
      *
      * @param Notification $notification
      */
-    protected function updateTimestampFields(Notification $notification)
+    protected function updateTimestampFields(Notification $notification): void
     {
         $oldNotification = $this->get($notification->id);
 

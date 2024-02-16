@@ -69,12 +69,12 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
         );
     }
 
-    protected function defineRoutes()
+    protected function defineRoutes(): void
     {
         $this->loadRoutesFrom(__DIR__ . '/../routes/api.php');
     }
 
-    protected function registerDirectives()
+    protected function registerDirectives(): void
     {
         Blade::if('notification', function ($value = null) {
 

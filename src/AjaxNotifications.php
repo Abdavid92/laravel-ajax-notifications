@@ -15,19 +15,9 @@ use Abdavid92\LaravelAjaxNotifications\Contracts\UserProvider;
 class AjaxNotifications
 {
     /**
-     * @var Storage
-     */
-    private $storage;
-
-    /**
-     * @var UserProvider
-     */
-    private $userProvider;
-
-    /**
      * @var boolean|Closure
      */
-    protected static $flash;
+    protected static mixed $flash;
 
     /**
      * AjaxNotifications constructor.
@@ -35,11 +25,10 @@ class AjaxNotifications
      * @param Storage $storage
      * @param UserProvider $userProvider
      */
-    public function __construct(Storage $storage, UserProvider $userProvider)
+    public function __construct(
+        private Storage $storage,
+        private UserProvider $userProvider)
     {
-        $this->storage = $storage;
-        $this->userProvider = $userProvider;
-
         if (! self::$flash)
             self::$flash = config('ajaxnotifications.flash', false);
     }

@@ -8,11 +8,14 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
 /**
  * Class Notification
  * @package Abdavid92\LaravelAjaxNotifications
+ * @author Abel David.
  *
  * @property string $id
  * @property array $header
  * @property array $body
  * @property Model $notifiable
+ * @property string $created_at
+ * @property string $updated_at
  *
  * @method static Notification|null find(string $id)
  */

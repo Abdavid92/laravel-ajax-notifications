@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
  * Interface NotificationResponse contract.
  *
  * @package Abdavid92\LaravelAjaxNotifications\Contracts
+ * @author Abel David.
  */
 interface NotificationResponse
 {

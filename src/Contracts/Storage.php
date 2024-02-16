@@ -20,7 +20,7 @@ interface Storage
      * @param string|null $id
      * @return Collection|Notification|null
      */
-    function get(?string $id = null);
+    function get(?string $id = null): Notification|Collection|null;
 
     /**
      * Put a notification. If was exists, override.
@@ -35,5 +35,5 @@ interface Storage
      * @param string $id
      * @return mixed
      */
-    function delete(string $id);
+    function delete(string $id): mixed;
 }
