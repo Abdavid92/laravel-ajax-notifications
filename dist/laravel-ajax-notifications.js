@@ -1447,12 +1447,12 @@ y.HttpStatusCode = Yt;
 y.default = y;
 const je = {
   listeners: [],
-  addListener: (e) => {
-    (void 0).listeners.push(e);
+  addListener(e) {
+    this.listeners.push(e);
   },
-  removeListener: (e) => {
-    let t = (void 0).listeners.findIndex((n) => n === e);
-    t !== -1 && (void 0).listeners.splice(t, 1);
+  removeListener(e) {
+    let t = this.listeners.findIndex((n) => n === e);
+    t !== -1 && this.listeners.splice(t, 1);
   },
   launchNotification(e) {
     this.listeners.forEach((t) => {
@@ -1471,4 +1471,4 @@ async function en() {
     console.log(e.message);
   }
 }
-setInterval(en, 5e3);
+setInterval(en, interval);

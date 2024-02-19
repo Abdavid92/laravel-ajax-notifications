@@ -71,7 +71,7 @@ class SessionStorage extends AbstractStorage
         Session::save();
     }
 
-    function delete(string $id): void
+    function delete(string $id): bool
     {
         $notifications = $this->getNotifications();
 
@@ -81,7 +81,11 @@ class SessionStorage extends AbstractStorage
 
             Session::put($this->master_session_key, $notifications);
             Session::save();
+
+            return true;
         }
+
+        return false;
     }
 
     private function getNotifications(): array

@@ -17,6 +17,11 @@ return [
     'flash' => false,
 
     /**
+     * Interval to fetch notifications.
+     */
+    'fetch_interval' => 5000,
+
+    /**
      * Routes middlewares.
      */
     'middlewares' => [

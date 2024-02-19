@@ -90,8 +90,9 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
         Blade::directive('ajaxnotifications', function () {
 
             $script = file_get_contents(__DIR__.'/../dist/laravel-ajax-notifications.js');
+            $interval = config('ajaxnotifications.fetch_interval', 5000);
 
-            return "<script>{$script}</script>";
+            return "<script>let interval = $interval; {$script}</script>";
         });
     }
 }

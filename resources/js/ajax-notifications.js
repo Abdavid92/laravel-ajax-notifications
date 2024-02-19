@@ -1,11 +1,15 @@
 import axios from "axios";
 
+/**
+ * @type {{listeners: *[], removeListener(*): void, launchNotification(*): void, addListener(*): void}}
+ */
+
 const AjaxNotifications = {
     listeners: [],
-    addListener: (listener) => {
+    addListener(listener) {
         this.listeners.push(listener)
     },
-    removeListener: (listener) => {
+    removeListener(listener) {
 
         let index = this.listeners.findIndex(l => l === listener)
 
@@ -43,4 +47,4 @@ async function fetchNotifications() {
     }
 }
 
-setInterval(fetchNotifications, 5000)
+setInterval(fetchNotifications, interval)
