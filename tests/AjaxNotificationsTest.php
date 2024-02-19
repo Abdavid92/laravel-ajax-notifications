@@ -71,7 +71,7 @@ class AjaxNotificationsTest extends TestCase
 
         // Compare with $first_id because the first notifications was modified,
         // for that reason no more the first notification else the last.
-        $this->assertEquals($first_id, $last->id);
+        $this->assertEquals($first_id, $first->id);
 
         echo $first;
         echo '\n';

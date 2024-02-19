@@ -49,7 +49,8 @@ class SessionStorage extends AbstractStorage
             $collection->add(new Notification([
                 'id' => $key,
                 'header' => $value['header'],
-                'body' => $value['body']
+                'body' => $value['body'],
+                'notifiable_id' => $value['notifiable_id']
             ]));
         }
 
@@ -64,7 +65,8 @@ class SessionStorage extends AbstractStorage
 
         $notifications[$notification->id] = [
             'header' => $notification->header,
-            'body' => $notification->body
+            'body' => $notification->body,
+            'notifiable_id' => $notification->notifiable_id
         ];
 
         Session::put($this->master_session_key, $notifications);

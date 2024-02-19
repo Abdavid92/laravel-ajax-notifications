@@ -70,6 +70,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
      */
     protected function defineEnvironment($app): void
     {
-        $app['config']->set('ajaxnotifications.storage', 'file');
+        $app['config']->set('ajaxnotifications.storage', 'session');
     }
 }
