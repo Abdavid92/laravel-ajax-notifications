@@ -17,7 +17,7 @@ return [
     'flash' => true,
 
     /**
-     * Interval to fetch notifications.
+     * Interval to fetch notifications in frontend.
      */
     'fetch_interval' => 5000,
 

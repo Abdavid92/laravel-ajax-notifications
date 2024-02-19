@@ -26,8 +26,9 @@ class AjaxNotifications
      * @param UserProvider $userProvider
      */
     public function __construct(
-        private Storage $storage,
-        private UserProvider $userProvider)
+        private readonly Storage      $storage,
+        private readonly UserProvider $userProvider
+    )
     {
         if (!isset(self::$flash))
             self::$flash = config('ajaxnotifications.flash', false);

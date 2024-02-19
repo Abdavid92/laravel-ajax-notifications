@@ -4,7 +4,7 @@ use Abdavid92\LaravelAjaxNotifications\Http\Controllers\AjaxNotificationsControl
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('ajax-notifications')
-    ->middleware(config('ajaxnotifications.middlewares', ['api', 'auth']))
+    ->middleware(config('ajaxnotifications.middlewares', ['web', 'auth']))
     ->group(function () {
 
     Route::get('/', [AjaxNotificationsController::class, 'all'])

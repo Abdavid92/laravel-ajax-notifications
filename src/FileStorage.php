@@ -60,7 +60,7 @@ class FileStorage extends AbstractStorage
         return null;
     }
 
-    function put(Notification $notification)
+    function put(Notification $notification): void
     {
         $this->updateTimestampFields($notification);
 
