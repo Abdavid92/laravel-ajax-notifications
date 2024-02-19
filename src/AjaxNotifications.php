@@ -29,8 +29,7 @@ class AjaxNotifications
         private Storage $storage,
         private UserProvider $userProvider)
     {
-        if (! self::$flash)
-            self::$flash = config('ajaxnotifications.flash', false);
+        self::$flash = config('ajaxnotifications.flash', false);
     }
 
     /**
@@ -149,7 +148,7 @@ class AjaxNotifications
         return $this->storage->get()->isNotEmpty();
     }
 
-    private function flash($items)
+    private function flash($items): void
     {
         if (is_null($items))
             return;

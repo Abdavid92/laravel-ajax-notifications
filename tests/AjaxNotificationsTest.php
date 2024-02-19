@@ -74,6 +74,7 @@ class AjaxNotificationsTest extends TestCase
         $this->assertEquals($first_id, $last->id);
 
         echo $first;
+        echo '\n';
         echo $last;
     }
 

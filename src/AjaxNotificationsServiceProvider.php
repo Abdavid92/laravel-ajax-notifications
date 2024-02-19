@@ -86,5 +86,12 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
 
             return $notifications->some();
         });
+
+        Blade::directive('ajaxnotifications', function () {
+
+            $script = file_get_contents(__DIR__.'/../dist/laravel-ajax-notifications.js');
+
+            return "<script>{$script}</script>";
+        });
     }
 }
