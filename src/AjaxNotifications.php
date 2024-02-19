@@ -29,7 +29,8 @@ class AjaxNotifications
         private Storage $storage,
         private UserProvider $userProvider)
     {
-        self::$flash = config('ajaxnotifications.flash', false);
+        if (!isset(self::$flash))
+            self::$flash = config('ajaxnotifications.flash', false);
     }
 
     /**
@@ -122,7 +123,7 @@ class AjaxNotifications
      *
      * @param string $id
      */
-    public function delete(string $id)
+    public function delete(string $id): void
     {
         $this->storage->delete($id);
     }
@@ -215,7 +216,7 @@ class AjaxNotifications
      *
      * @param Closure $callback
      */
-    public static function setFlashCallback(Closure $callback)
+    public static function setFlashCallback(Closure $callback): void
     {
         self::$flash = $callback;
     }

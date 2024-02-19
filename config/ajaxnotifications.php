@@ -14,7 +14,7 @@ return [
     /**
      * Indicate if notifications must be deleted after returned.
      */
-    'flash' => false,
+    'flash' => true,
 
     /**
      * Interval to fetch notifications.
@@ -25,7 +25,7 @@ return [
      * Routes middlewares.
      */
     'middlewares' => [
-        'api',
+        'web',
         'auth:sanctum'
     ],
 

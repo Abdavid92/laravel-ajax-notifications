@@ -69,4 +69,26 @@ class Notification extends Model
     {
         return $this->morphTo('notifiable');
     }
+
+    /**
+     * @param array $header
+     * @return $this
+     */
+    public function setHeader(array $header): self
+    {
+        $this->header = $header;
+
+        return $this;
+    }
+
+    /**
+     * @param array $body
+     * @return $this
+     */
+    public function setBody(array $body): self
+    {
+        $this->body = $body;
+
+        return $this;
+    }
 }
