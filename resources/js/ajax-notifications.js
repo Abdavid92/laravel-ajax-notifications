@@ -3,7 +3,6 @@ import axios from "axios";
 /**
  * @type {{listeners: *[], removeListener(*): void, launchNotification(*): void, addListener(*): void}}
  */
-
 const AjaxNotifications = {
     listeners: [],
     addListener(listener) {
@@ -34,6 +33,10 @@ async function fetchNotifications() {
 
         let response = await axios.get('/ajax-notifications')
 
+        if (debug) {
+            console.log(response)
+        }
+
         if (response.status === 200) {
 
             response.data.forEach(notification => {
@@ -43,8 +46,15 @@ async function fetchNotifications() {
 
     } catch (e) {
 
-        console.log(e.message)
+        if (debug) {
+            console.log(e.message)
+        }
     }
 }
 
-setInterval(fetchNotifications, interval)
+document.addEventListener("readystatechange", () => {
+
+    if (document.readyState === "complete") {
+        setInterval(fetchNotifications, interval)
+    }
+})

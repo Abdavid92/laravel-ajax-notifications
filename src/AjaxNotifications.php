@@ -43,7 +43,6 @@ class AjaxNotifications
     {
         return tap($this->filterByUser($this->storage->get()), function ($items) {
 
-
             $this->flash($items);
         });
     }

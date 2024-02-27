@@ -1464,11 +1464,13 @@ window.AjaxNotifications = je;
 async function en() {
   try {
     let e = await y.get("/ajax-notifications");
-    e.status === 200 && e.data.forEach((t) => {
+    debug && console.log(e), e.status === 200 && e.data.forEach((t) => {
       je.launchNotification(t);
     });
   } catch (e) {
-    console.log(e.message);
+    debug && console.log(e.message);
   }
 }
-setInterval(en, interval);
+document.addEventListener("readystatechange", () => {
+  document.readyState === "complete" && setInterval(en, interval);
+});
