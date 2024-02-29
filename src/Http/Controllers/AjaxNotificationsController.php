@@ -17,7 +17,8 @@ use Illuminate\Routing\Controller;
 class AjaxNotificationsController extends Controller
 {
     public function __construct(
-        private AjaxNotifications $notifications)
+        private readonly AjaxNotifications $notifications
+    )
     {
         //
     }
@@ -59,7 +60,10 @@ class AjaxNotificationsController extends Controller
         return app(FailedNotificationResponse::class)->toResponse();
     }
 
-    public function last()
+    /**
+     * @return JsonResponse
+     */
+    public function last(): JsonResponse
     {
         if ($notification = $this->notifications->last()) {
 
@@ -67,5 +71,12 @@ class AjaxNotificationsController extends Controller
         }
 
         return app(FailedNotificationResponse::class)->toResponse();
+    }
+
+    public function delete(string $id): JsonResponse
+    {
+        $this->notifications->delete($id);
+
+        return response()->json();
     }
 }
