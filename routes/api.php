@@ -18,4 +18,7 @@ Route::prefix('ajax-notifications')
 
     Route::get('/last', [AjaxNotificationsController::class, 'last'])
         ->name('ajax-notifications.last');
+
+    Route::delete('/{id}', [AjaxNotificationsController::class, 'delete'])
+        ->name('ajax-notifications.delete');
 });

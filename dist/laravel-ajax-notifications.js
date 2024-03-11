@@ -319,11 +319,11 @@ function M(e, t, n) {
       if (a.endsWith(d, "{}"))
         d = r ? d : d.slice(0, -2), f = JSON.stringify(f);
       else if (a.isArray(f) && bt(f) || (a.isFileList(f) || a.endsWith(d, "[]")) && (b = a.toArray(f)))
-        return d = ge(d), b.forEach(function(N, ke) {
-          !(a.isUndefined(N) || N === null) && t.append(
+        return d = ge(d), b.forEach(function(x, ke) {
+          !(a.isUndefined(x) || x === null) && t.append(
             // eslint-disable-next-line no-nested-ternary
             i === !0 ? ie([d], ke, o) : i === null ? d : d + "[]",
-            h(N)
+            h(x)
           );
         }), !1;
     }
@@ -370,11 +370,11 @@ function ae(e) {
 function Y(e, t) {
   this._pairs = [], e && M(e, this, t);
 }
-const Ne = Y.prototype;
-Ne.append = function(t, n) {
+const xe = Y.prototype;
+xe.append = function(t, n) {
   this._pairs.push([t, n]);
 };
-Ne.toString = function(t) {
+xe.toString = function(t) {
   const n = t ? function(r) {
     return t.call(this, r, ae);
   } : ae;
@@ -385,7 +385,7 @@ Ne.toString = function(t) {
 function Rt(e) {
   return encodeURIComponent(e).replace(/%3A/gi, ":").replace(/%24/g, "$").replace(/%2C/gi, ",").replace(/%20/g, "+").replace(/%5B/gi, "[").replace(/%5D/gi, "]");
 }
-function xe(e, t, n) {
+function Ne(e, t, n) {
   if (!t)
     return e;
   const r = n && n.encode || Rt, s = n && n.serialize;
@@ -462,12 +462,12 @@ const Pe = {
     Blob: Tt
   },
   protocols: ["http", "https", "file", "blob", "url", "data"]
-}, Ce = typeof window < "u" && typeof document < "u", Nt = ((e) => Ce && ["ReactNative", "NativeScript", "NS"].indexOf(e) < 0)(typeof navigator < "u" && navigator.product), xt = typeof WorkerGlobalScope < "u" && // eslint-disable-next-line no-undef
+}, Ce = typeof window < "u" && typeof document < "u", xt = ((e) => Ce && ["ReactNative", "NativeScript", "NS"].indexOf(e) < 0)(typeof navigator < "u" && navigator.product), Nt = typeof WorkerGlobalScope < "u" && // eslint-disable-next-line no-undef
 self instanceof WorkerGlobalScope && typeof self.importScripts == "function", Pt = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
   __proto__: null,
   hasBrowserEnv: Ce,
-  hasStandardBrowserEnv: Nt,
-  hasStandardBrowserWebWorkerEnv: xt
+  hasStandardBrowserEnv: xt,
+  hasStandardBrowserWebWorkerEnv: Nt
 }, Symbol.toStringTag, { value: "Module" })), O = {
   ...Pt,
   ...gt
@@ -924,7 +924,7 @@ const Wt = typeof XMLHttpRequest < "u", Kt = Wt && function(e) {
       o.set("Authorization", "Basic " + btoa(d + ":" + w));
     }
     const E = Be(e.baseURL, e.url);
-    u.open(e.method.toUpperCase(), xe(E, e.params, e.paramsSerializer), !0), u.timeout = e.timeout;
+    u.open(e.method.toUpperCase(), Ne(E, e.params, e.paramsSerializer), !0), u.timeout = e.timeout;
     function S() {
       if (!u)
         return;
@@ -938,10 +938,10 @@ const Wt = typeof XMLHttpRequest < "u", Kt = Wt && function(e) {
         config: e,
         request: u
       };
-      It(function(N) {
-        n(N), h();
-      }, function(N) {
-        r(N), h();
+      It(function(x) {
+        n(x), h();
+      }, function(x) {
+        r(x), h();
       }, b), u = null;
     }
     if ("onloadend" in u ? u.onloadend = S : u.onreadystatechange = function() {
@@ -1153,7 +1153,7 @@ function Xt(e, t, n) {
 const v = {
   assertOptions: Xt,
   validators: ne
-}, x = v.validators;
+}, N = v.validators;
 class k {
   constructor(t) {
     this.defaults = t, this.interceptors = {
@@ -1187,14 +1187,14 @@ class k {
     typeof t == "string" ? (n = n || {}, n.url = t) : n = t || {}, n = P(this.defaults, n);
     const { transitional: r, paramsSerializer: s, headers: o } = n;
     r !== void 0 && v.assertOptions(r, {
-      silentJSONParsing: x.transitional(x.boolean),
-      forcedJSONParsing: x.transitional(x.boolean),
-      clarifyTimeoutError: x.transitional(x.boolean)
+      silentJSONParsing: N.transitional(N.boolean),
+      forcedJSONParsing: N.transitional(N.boolean),
+      clarifyTimeoutError: N.transitional(N.boolean)
     }, !1), s != null && (a.isFunction(s) ? n.paramsSerializer = {
       serialize: s
     } : v.assertOptions(s, {
-      encode: x.function,
-      serialize: x.function
+      encode: N.function,
+      serialize: N.function
     }, !0)), n.method = (n.method || this.defaults.method || "get").toLowerCase();
     let i = o && a.merge(
       o.common,
@@ -1245,7 +1245,7 @@ class k {
   getUri(t) {
     t = P(this.defaults, t);
     const n = Be(t.baseURL, t.url);
-    return xe(n, t.params, t.paramsSerializer);
+    return Ne(n, t.params, t.paramsSerializer);
   }
 }
 a.forEach(["delete", "get", "head", "options"], function(t) {
@@ -1458,6 +1458,12 @@ const je = {
     this.listeners.forEach((t) => {
       t(e);
     });
+  },
+  async get(e) {
+    return await y.get("/ajax-notifications/" + e);
+  },
+  async delete(e) {
+    return await y.delete("/ajax-notifications/" + e);
   }
 };
 window.AjaxNotifications = je;

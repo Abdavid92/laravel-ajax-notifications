@@ -1,7 +1,7 @@
 import axios from "axios";
 
 /**
- * @type {{listeners: *[], removeListener(*): void, launchNotification(*): void, addListener(*): void}}
+ * @type {{listeners: *[], get(*): Promise<AxiosResponse<any>>, removeListener(*): void, delete(*): Promise<AxiosResponse<any>>, launchNotification(*): void, addListener(*): void}}
  */
 const AjaxNotifications = {
     listeners: [],
@@ -22,6 +22,12 @@ const AjaxNotifications = {
         this.listeners.forEach(listener => {
             listener(notification)
         })
+    },
+    async get(id) {
+        return await axios.get('/ajax-notifications/' + id)
+    },
+    async delete(id) {
+        return await axios.delete('/ajax-notifications/' + id)
     }
 }
 
