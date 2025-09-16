@@ -7,9 +7,7 @@ namespace Abdavid92\LaravelAjaxNotifications;
 use Abdavid92\LaravelAjaxNotifications\Contracts\FailedNotificationResponse;
 use Abdavid92\LaravelAjaxNotifications\Contracts\NotificationResponse;
 use Abdavid92\LaravelAjaxNotifications\Contracts\Storage;
-use Abdavid92\LaravelAjaxNotifications\Http\Controllers\AjaxNotificationsController;
 use Illuminate\Support\Facades\Blade;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 
 class AjaxNotificationsServiceProvider extends ServiceProvider
@@ -91,7 +89,7 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
 
             $script = file_get_contents(__DIR__.'/../dist/laravel-ajax-notifications.js');
             $interval = (int) config('ajaxnotifications.fetch_interval', 5000);
-            $debug = config('app.debug', false) ? 'true' : 'false';
+            $debug = config('ajaxnotifications.debug', false) ? 'true' : 'false';
 
             return "<script>let interval = $interval; let debug = $debug; {$script}</script>";
         });

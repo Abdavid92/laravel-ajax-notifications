@@ -4,6 +4,7 @@
 namespace Abdavid92\LaravelAjaxNotifications\Tests;
 
 
+use Abdavid92\LaravelAjaxNotifications\AjaxNotificationsServiceProvider;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Auth\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -58,7 +59,7 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
     protected function getPackageProviders($app): array
     {
         return [
-            'Abdavid92\LaravelAjaxNotifications\AjaxNotificationsServiceProvider',
+            AjaxNotificationsServiceProvider::class
         ];
     }
 

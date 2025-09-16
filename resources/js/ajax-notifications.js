@@ -1,5 +1,7 @@
 import axios from "axios";
 
+const ajaxNotificationsRunning = true
+
 /**
  * @type {{listeners: *[], get(*): Promise<AxiosResponse<any>>, removeListener(*): void, delete(*): Promise<AxiosResponse<any>>, launchNotification(*): void, addListener(*): void}}
  */
@@ -35,25 +37,28 @@ window.AjaxNotifications = AjaxNotifications
 
 async function fetchNotifications() {
 
-    try {
+    if (ajaxNotificationsRunning) {
+        
+        try {
 
-        let response = await axios.get('/ajax-notifications')
+            let response = await axios.get('/ajax-notifications')
 
-        if (debug) {
-            console.log(response)
-        }
+            if (debug) {
+                console.log(response)
+            }
 
-        if (response.status === 200) {
+            if (response.status === 200) {
 
-            response.data.forEach(notification => {
-                AjaxNotifications.launchNotification(notification)
-            })
-        }
+                response.data.forEach(notification => {
+                    AjaxNotifications.launchNotification(notification)
+                })
+            }
 
-    } catch (e) {
+        } catch (e) {
 
-        if (debug) {
-            console.log(e.message)
+            if (debug) {
+                console.log(e.message)
+            }
         }
     }
 }
@@ -62,5 +67,13 @@ document.addEventListener("readystatechange", () => {
 
     if (document.readyState === "complete") {
         setInterval(fetchNotifications, interval)
+        document.addEventListener("visibilitychange", () => {
+
+            if (document.hidden) {
+                ajaxNotificationsRunning = false
+            } else {
+                ajaxNotificationsRunning = true
+            }
+        })
     }
 })

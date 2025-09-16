@@ -39,5 +39,10 @@ return [
         'file' => [
             'directory' => 'ajax-notifications'
         ]
-    ]
+    ],
+
+    /**
+     * Indicate if debug mode is enabled.
+     */
+    'debug' => env('APP_DEBUG', false)
 ];

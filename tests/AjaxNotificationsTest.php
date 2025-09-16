@@ -6,8 +6,6 @@ namespace Abdavid92\LaravelAjaxNotifications\Tests;
 
 use Abdavid92\LaravelAjaxNotifications\AjaxNotifications;
 use Abdavid92\LaravelAjaxNotifications\Notification;
-use Illuminate\Foundation\Auth\User;
-use Illuminate\Support\Facades\Hash;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
@@ -53,7 +51,9 @@ class AjaxNotificationsTest extends TestCase
             ]
         ]));
 
-        $this->test_all();
+        $collection = $this->notifications->all();
+
+        $this->assertNotEmpty($collection);
 
         $notification = $this->notifications->get($first_id);
 
@@ -80,6 +80,20 @@ class AjaxNotificationsTest extends TestCase
 
     public function test_all()
     {
+        $this->notifications->send(new Notification([
+            'body' => [
+                'title' => 'Notification 1',
+                'description' => 'A simple notification'
+            ]
+        ]));
+
+        $this->notifications->send(new Notification([
+            'body' => [
+                'title' => 'Notification 2',
+                'description' => 'Other simple notification'
+            ]
+        ]));
+        
         $collection = $this->notifications->all();
 
         $this->assertNotEmpty($collection);
@@ -87,6 +101,20 @@ class AjaxNotificationsTest extends TestCase
 
     public function test_delete()
     {
+        $this->notifications->send(new Notification([
+            'body' => [
+                'title' => 'Notification 1',
+                'description' => 'A simple notification'
+            ]
+        ]));
+
+        $this->notifications->send(new Notification([
+            'body' => [
+                'title' => 'Notification 2',
+                'description' => 'Other simple notification'
+            ]
+        ]));
+        
         foreach ($this->notifications->all() as $n) {
             $this->notifications->delete($n->id);
         }
