@@ -1,7 +1,11 @@
 <?php
 
 return [
-
+    /**
+     * Indicate if fetch notifications is enabled.
+     */
+    'enabled' => true,
+    
     /**
      * Storage driver. Support (session, database, file).
      * Session driver is based in user session, good for simples notifications.
