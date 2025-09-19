@@ -87,11 +87,14 @@ class AjaxNotificationsServiceProvider extends ServiceProvider
 
         Blade::directive('ajaxnotifications', function () {
 
-            $script = file_get_contents(__DIR__.'/../dist/laravel-ajax-notifications.js');
-            $interval = (int) config('ajaxnotifications.fetch_interval', 5000);
-            $debug = config('ajaxnotifications.debug', false) ? 'true' : 'false';
+            if (config('ajaxnotifications.enabled', true)) {
 
-            return "<script>let interval = $interval; let debug = $debug; {$script}</script>";
+                $script = file_get_contents(__DIR__.'/../dist/laravel-ajax-notifications.js');
+                $interval = (int) config('ajaxnotifications.fetch_interval', 5000);
+                $debug = config('ajaxnotifications.debug', false) ? 'true' : 'false';
+
+                return "<script>let interval = $interval; let debug = $debug; {$script}</script>";
+            }
         });
     }
 }
