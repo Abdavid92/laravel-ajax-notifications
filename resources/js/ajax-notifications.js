@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ajaxNotificationsRunning = true
+var ajaxNotificationsRunning = true
 
 /**
  * @type {{listeners: *[], get(*): Promise<AxiosResponse<any>>, removeListener(*): void, delete(*): Promise<AxiosResponse<any>>, launchNotification(*): void, addListener(*): void}}
@@ -68,12 +68,7 @@ document.addEventListener("readystatechange", () => {
     if (document.readyState === "complete") {
         setInterval(fetchNotifications, interval)
         document.addEventListener("visibilitychange", () => {
-
-            if (document.hidden) {
-                ajaxNotificationsRunning = false
-            } else {
-                ajaxNotificationsRunning = true
-            }
+            ajaxNotificationsRunning = !document.hidden
         })
     }
 })
